@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
 function PartsLookup() {
+  //states for storing the fetched data arrays
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([]);
   const [types, setTypes] = useState([]);
   const [partNos, setPartNos] = useState([]); // Changed to array to show multiple parts
 
+  //state to check if serach is performed
   const [searchPerformed, setSearchPerformed] = useState(false);
+  //state to check the current selected options
   const [selectedMake, setSelectedMake] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
+  //backend api url
   const baseURL = "http://localhost/vehicle-parts-project/vehicle-parts-api";
 
+  //useEffect hook to fetch makes everytime the mounting happens
   useEffect(() => {
     const fetchMakes = async () => {
       try {
+        //async request for fetching the makes
         const res = await fetch(`${baseURL}/getMakes.php`);
+        //convert body of response to JS object array
         const data = await res.json();
         setMakes(data);
       } catch (error) {
@@ -28,12 +35,14 @@ function PartsLookup() {
 
   useEffect(() => {
     const fetchModels = async () => {
+      //check if any make is selected
       if (!selectedMake) {
         setModels([]);
         setSelectedModel('');
         return;
       }
       try {
+        //fetch models based on selected make
         const res = await fetch(`${baseURL}/getModels.php?make=${selectedMake}`);
         const data = await res.json();
         setModels(data);
@@ -52,13 +61,14 @@ function PartsLookup() {
         return;
       }
 
-      // Optionally, build URL with or without model
+      // build URL with or without model
       let url = `${baseURL}/getTypes.php?make=${selectedMake}`;
       if (selectedModel) {
         url += `&model=${selectedModel}`;
       }
 
       try {
+        //fetch types based on selected make and/or model
         const res = await fetch(url);
         const data = await res.json();
         setTypes(data);
@@ -70,8 +80,10 @@ function PartsLookup() {
   }, [selectedMake, selectedModel]);  // also watch selectedMake to refetch when it changes
 
 
+  //event handler when search button is pressed
   const handleSearch = async () => {
     try {
+      //fetch request for part no.
       let url = `${baseURL}/getPart.php`;
       const params = new URLSearchParams();
       if (selectedMake) params.append("make", selectedMake);
@@ -91,6 +103,7 @@ function PartsLookup() {
     }
   };
 
+  //event handler when clear button is pressed
   const handleClear = () => {
     setSelectedMake('');
     setSelectedModel('');
