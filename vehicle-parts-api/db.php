@@ -4,6 +4,7 @@ $username = "root";
 $password = "";
 $dbname = "vehicledb";
 
+//create a new connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection

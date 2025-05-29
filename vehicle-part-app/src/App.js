@@ -146,11 +146,26 @@ function PartsLookup() {
           <em>Please click 'Clear' before making a new search.</em>
           <div style={{ marginTop: '20px' }}>
           <strong>Part Numbers:</strong>
-          <ul>
-            {partNos.map((part, index) => (
-              <li key={index}>{part}</li>
+          <table style={{ borderCollapse: 'collapse', width: '100%', marginTop: '20px' }}>
+          <thead>
+            <tr>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Make</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Model</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Type</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Part No</th>
+            </tr>
+          </thead>
+          <tbody>
+            {partNos.map((item, index) => (
+              <tr key={index}>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{item.make}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{item.model}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{item.type}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{item.part}</td>
+              </tr>
             ))}
-          </ul>
+          </tbody>
+        </table>
           </div>
         </div>
       )}

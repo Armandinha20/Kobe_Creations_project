@@ -8,7 +8,7 @@ $model = isset($_GET['model']) ? $_GET['model'] : null;
 $type = isset($_GET['type']) ? $_GET['type'] : null;
 
 // Base query
-$sql = "SELECT partno FROM parts";
+$sql = "SELECT partno, make, model, type FROM parts";
 
 // Build WHERE conditions dynamically
 $conditions = [];
@@ -51,7 +51,12 @@ $result = $stmt->get_result();
 
 $partnos = [];
 while($row = $result->fetch_assoc()) {
-  $partnos[] = $row['partno'];
+  $partnos[] = [
+    'make' => $row['make'],
+    'model' => $row['model'],
+    'type' => $row['type'],
+    'part' => $row['partno']
+  ];
 }
 
 header('Content-Type: application/json');
