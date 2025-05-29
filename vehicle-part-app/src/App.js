@@ -6,6 +6,7 @@ function PartsLookup() {
   const [types, setTypes] = useState([]);
   const [partNos, setPartNos] = useState([]); // Changed to array to show multiple parts
 
+  const [searchPerformed, setSearchPerformed] = useState(false);
   const [selectedMake, setSelectedMake] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -84,9 +85,20 @@ function PartsLookup() {
       const res = await fetch(url);
       const data = await res.json();
       setPartNos(data);
+      setSearchPerformed(true);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleClear = () => {
+    setSelectedMake('');
+    setSelectedModel('');
+    setSelectedType('');
+    setModels([]);
+    setTypes([]);
+    setPartNos([]);
+    setSearchPerformed(false);
   };
 
   return (
@@ -112,18 +124,25 @@ function PartsLookup() {
         Get Part Number
       </button>
 
+      <button onClick={handleClear} style={{ marginLeft: '10px' }}>
+        Clear
+      </button>
+
       {partNos.length > 0 && (
         <div style={{ marginTop: '20px' }}>
+          <em>Please click 'Clear' before making a new search.</em>
+          <div style={{ marginTop: '20px' }}>
           <strong>Part Numbers:</strong>
           <ul>
             {partNos.map((part, index) => (
               <li key={index}>{part}</li>
             ))}
           </ul>
+          </div>
         </div>
       )}
 
-      {partNos.length === 0 && (
+      {searchPerformed && partNos.length === 0 && (
         <div style={{ marginTop: '20px' }}>
           <em>No parts found. Try different selections.</em>
         </div>
